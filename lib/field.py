@@ -21,60 +21,60 @@ class Field:
             text += " " * (field_width - (len(text) - 1)) + "|"
             self.field.append(text)
         self.field.append("-" * (field_width + 2))
-        for col, i_col in enumerate(item_map.item_map):
-            curr_col = self.field[col + 1]
-            for row, i_row in enumerate(i_col):
-                if i_row:
-                    self.field[col + 1] = curr_col[:row + 1] + item_graphic + curr_col[row + 2:]
-                curr_col = self.field[col + 1]
-        for col, b_col in enumerate(bul_map.bul_map):
-            curr_col = self.field[col + 1]
-            for row, b_row in enumerate(b_col):
-                if b_row["owner"]:
-                    if self.field[col + 1][row + 1] == " ":
-                        vel = abs(b_row["vel"])
+        for row, i_row in enumerate(item_map.item_map):
+            curr_row = self.field[row + 1]
+            for col, i_col in enumerate(i_row):
+                if i_col:
+                    self.field[row + 1] = curr_row[:col + 1] + item_graphic + curr_row[col + 2:]
+                curr_row = self.field[row + 1]
+        for row, b_row in enumerate(bul_map.bul_map):
+            curr_row = self.field[row + 1]
+            for col, b_col in enumerate(b_row):
+                if b_col["owner"]:
+                    if self.field[row + 1][col + 1] == " ":
+                        vel = abs(b_col["vel"])
                         if vel <= 16:
-                            self.field[col + 1] = curr_col[:row + 1] + 'a' + curr_col[row + 2:]
+                            self.field[row + 1] = curr_row[:col + 1] + 'a' + curr_row[col + 2:]
                         elif vel <= 32:
-                            self.field[col + 1] = curr_col[:row + 1] + 'b' + curr_col[row + 2:]
+                            self.field[row + 1] = curr_row[:col + 1] + 'b' + curr_row[col + 2:]
                         else:
-                            self.field[col + 1] = curr_col[:row + 1] + 'c' + curr_col[row + 2:]
-                    elif self.field[col + 1][row + 1] == item_graphic:
-                        item_map.item_map[col][row].get_dam(own=bul_map.bul_map[col][row]["owner"], dam=bul_map.bul_map[col][row]["dam"])
-                        bul_map.bul_map[col][row] = {"owner" : "", "shot" : -1, "dam" : 1}
-                    elif col < len(enemy_graphic):
-                        enemy.get_dam(dam=bul_map.bul_map[col][row]["dam"])
-                        bul_map.bul_map[col][row] = {"owner" : "", "shot" : -1, "dam" : 1}
-                    elif col > field_height - len(player_graphic) - 1:
-                        player.get_dam(dam=bul_map.bul_map[col][row]["dam"])
-                        bul_map.bul_map[col][row] = {"owner" : "", "shot" : -1, "dam" : 1}
-                curr_col = self.field[col + 1]
+                            self.field[row + 1] = curr_row[:col + 1] + 'c' + curr_row[col + 2:]
+                    elif self.field[row + 1][col + 1] == item_graphic:
+                        item_map.item_map[row][col].get_dam(own=bul_map.bul_map[row][col]["owner"], dam=bul_map.bul_map[row][col]["dam"])
+                        bul_map.bul_map[row][col] = {"owner" : "", "shot" : -1, "dam" : 1}
+                    elif row < len(enemy_graphic):
+                        enemy.get_dam(dam=bul_map.bul_map[row][col]["dam"])
+                        bul_map.bul_map[row][col] = {"owner" : "", "shot" : -1, "dam" : 1}
+                    elif row > field_height - len(player_graphic) - 1:
+                        player.get_dam(dam=bul_map.bul_map[row][col]["dam"])
+                        bul_map.bul_map[row][col] = {"owner" : "", "shot" : -1, "dam" : 1}
+                curr_row = self.field[row + 1]
         if clear:
-            for col, f_col in enumerate(self.field):
-                new_col = ""
-                for f_row in f_col:
-                    if f_row == 'a':
-                        new_col += no_col_bul
-                    elif f_row == 'b':
-                        new_col += no_col_fast_bul
-                    elif f_row == 'c':
-                        new_col += no_col_fastest_bul
+            for row, f_row in enumerate(self.field):
+                new_row = ""
+                for f_col in f_row:
+                    if f_col == 'a':
+                        new_row += no_col_bul
+                    elif f_col == 'b':
+                        new_row += no_col_fast_bul
+                    elif f_col == 'c':
+                        new_row += no_col_fastest_bul
                     else:
-                        new_col += f_row
-                self.field[col] = new_col
+                        new_row += f_col
+                self.field[row] = new_row
         else:
-            for col, f_col in enumerate(self.field):
-                new_col = ""
-                for f_row in f_col:
-                    if f_row == 'a':
-                        new_col += bul_graphic
-                    elif f_row == 'b':
-                        new_col += fast_bul_graphic
-                    elif f_row == 'c':
-                        new_col += fastest_bul_graphic
+            for row, f_row in enumerate(self.field):
+                new_row = ""
+                for f_col in f_row:
+                    if f_col == 'a':
+                        new_row += bul_graphic
+                    elif f_col == 'b':
+                        new_row += fast_bul_graphic
+                    elif f_col == 'c':
+                        new_row += fastest_bul_graphic
                     else:
-                        new_col += f_row
-                self.field[col] = new_col
+                        new_row += f_col
+                self.field[row] = new_row
 
     def print_field(self):
         for _ in self.field:

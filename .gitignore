@@ -1,0 +1,10 @@
+#.gitignore
+
+#Python
+venv/
+
+#Ignore .spec files
+*.spec
+
+#ignore build directory
+build/

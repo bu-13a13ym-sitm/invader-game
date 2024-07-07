@@ -65,8 +65,8 @@ bul_map = BulMap()
 item_map = ItemMap()
 field = Field(player=player, enemy=enemy, item_map=item_map, bul_map=bul_map, clear=clear)
 item_list = []
-for col in field.field:
-    print(col)
+for row in field.field:
+    print(row)
     sleep(0.2)
 frame += 1
 
@@ -206,11 +206,11 @@ try:
         item.sustain = 0
         item.hp = 0
     if clear > 0:
-        for col, s_col in enumerate(field.field):
-            for row, s_row in enumerate(s_col):
-                if s_row == " ":
-                    field.field[col] = s_col[:row] + "□" + s_col[row + 1:]
-                    s_col = field.field[col]
+        for row, s_row in enumerate(field.field):
+            for col, s_col in enumerate(s_row):
+                if s_col == " ":
+                    field.field[row] = s_row[:col] + "□" + s_row[col + 1:]
+                    s_row = field.field[row]
         field.print_field()
         sounds = [
             DO := scale(75),
@@ -232,13 +232,13 @@ try:
         def command_line(field, fin):
             message = "!YOU WIN!"
             message_begin = len(field.field[0]) // 2 - len(message) // 2
-            for col, f_col in enumerate(reversed(field.field)):
-                for row, f_row in enumerate(f_col):
-                    if col == len(field.field) // 2 and row > message_begin and row <= message_begin + len(message):
-                        field.field[len(field.field) - col - 1] = f_col[:row] + message[row - message_begin - 1] + f_col[row + 1:]
+            for row, f_row in enumerate(reversed(field.field)):
+                for col, f_col in enumerate(f_row):
+                    if row == len(field.field) // 2 and col > message_begin and col <= message_begin + len(message):
+                        field.field[len(field.field) - row - 1] = f_row[:col] + message[col - message_begin - 1] + f_row[col + 1:]
                     else:
-                        field.field[len(field.field) - col - 1] = f_col[:row] + " " + f_col[row + 1:]
-                    f_col = field.field[len(field.field) - col - 1]
+                        field.field[len(field.field) - row - 1] = f_row[:col] + " " + f_row[col + 1:]
+                    f_row = field.field[len(field.field) - row - 1]
                     field.print_field()
                     sleep(1/500)
             fin.value = True
@@ -262,14 +262,14 @@ try:
         asyncio.run(main(field))
 
     elif clear < 0:
-        for col, s_col in enumerate(field.field):
-            for row, s_row in enumerate(s_col):
-                if s_row == " ":
-                    field.field[col] = s_col[:row] + "■" + s_col[row + 1:]
-                    s_col = field.field[col]
-                elif s_row == "■":
-                    field.field[col] = s_col[:row] + "□" + s_col[row + 1:]
-                    s_col = field.field[col]
+        for row, s_row in enumerate(field.field):
+            for col, s_col in enumerate(s_row):
+                if s_col == " ":
+                    field.field[row] = s_row[:col] + "■" + s_row[col + 1:]
+                    s_row = field.field[row]
+                elif s_col == "■":
+                    field.field[row] = s_row[:col] + "□" + s_row[col + 1:]
+                    s_row = field.field[row]
         field.print_field()
         for i in range(2):
             pwm.start(50)
@@ -282,20 +282,20 @@ try:
         def command_line(field, fin):
             message = "YOU LOSE..."
             message_begin = len(field.field[0]) // 2 - len(message) // 2
-            for count, col in enumerate(reversed(field.field)):
-                del_list = [True for row in col]
+            for count, row in enumerate(reversed(field.field)):
+                del_list = [True for col in row]
                 while any(del_list):
-                    del_field = rd(0, len(col) - 1)
+                    del_field = rd(0, len(row) - 1)
                     while field.field[len(field.field) - count - 1] and not del_list[del_field]:
-                        del_field = rd(0, len(col) - 1)
+                        del_field = rd(0, len(row) - 1)
                     if count == len(field.field) // 2 and del_field > message_begin and del_field <= message_begin + len(message):
-                        field.field[len(field.field) - count - 1] = col[:del_field] + message[del_field - message_begin - 1] + col[del_field + 1:]
+                        field.field[len(field.field) - count - 1] = row[:del_field] + message[del_field - message_begin - 1] + row[del_field + 1:]
                     else:
-                        field.field[len(field.field) - count - 1] = col[:del_field] + " " + col[del_field + 1:]
+                        field.field[len(field.field) - count - 1] = row[:del_field] + " " + row[del_field + 1:]
                     del_list[del_field] = False
-                    col = field.field[len(field.field) - count - 1]
+                    row = field.field[len(field.field) - count - 1]
                     field.print_field()
-                    sleep(1/300)
+                    sleep(1/150)
             fin.value = True
 
         def led(fin):
@@ -303,7 +303,6 @@ try:
             while not fin.value:
                 for count in range(len(X)):
                     sspi(char_to_segments[X[count]])
-                    count += 1
                     sleep(0.5)
 
         async def main(field):

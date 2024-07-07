@@ -1,3 +1,4 @@
-GPIO.RPi
+RPi.GPIO
 gpiozero
 spidev
+lgpio

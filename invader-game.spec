@@ -4,20 +4,21 @@
 a = Analysis(
     ['invader-game.py'],
     pathex=[
-	'/home/ub723356/invader-game/venv/lib/python3.11/site-packages',
-	'/home/ub723356/invader-game/venv/local/lib/python3.11/dist-packages',
-	'/home/ub723356/invader-game/venv/lib/python3/dist-packages',
-	'/home/ub723356/invader-game/venv/lib/python3.11/dist-packages'
-],
+        '/home/ub723356/invader-game/venv/lib/python3.11/site-packages',
+        '/home/ub723356/invader-game/venv/local/lib/python3.11/dist-packages',
+        '/home/ub723356/invader-game/venv/lib/python3/dist-packages',
+        '/home/ub723356/invader-game/venv/lib/python3.11/dist-packages'
+    ],
     binaries=[],
     datas=[],
     hiddenimports=[
-	'RPi.GPIO',
-	'gpiozero.pins.rpigpio',
-	'gpiozero.pins.lgpio',
-	'gpiozero.pins.pigpio',
-	'gpiozero.pins.native'
-],
+        'RPi.GPIO',
+        'gpiozero.pins.rpigpio',
+        'gpiozero.pins.lgpio',
+        'gpiozero.pins.pigpio',
+        'gpiozero.pins.native',
+        'lgpio'
+    ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
